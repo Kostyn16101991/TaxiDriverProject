@@ -12,6 +12,18 @@
     <string name="hint_conf_password">Confirm Password</string>
     <string name="btn_create_account">Create Account</string>
     <string name="tv_link_login">Already a member? Login</string>
+    <string name="hint_car_model">Car Model</string>
+    <string name="hint_num_plate">Num Plate</string>
     <item name="visible" type="id"/>
     <item name="masked" type="id"/>
+    <array name="driver_sex">
+        <item>male</item>
+        <item>female</item>
+    </array>
+    <array name="driver_age">
+        <item>18 year</item>
+        <item>19 year</item>
+        <item>20 year</item>
+        <item>21 year</item>
+    </array>
 </resources>
