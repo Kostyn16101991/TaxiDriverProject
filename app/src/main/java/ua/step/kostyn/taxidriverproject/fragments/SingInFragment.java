@@ -22,8 +22,6 @@ public class SingInFragment extends BaseFragment {
     EditText etLogin;
     @BindView(R.id.et_password)
     EditText etPassword;
-    @BindView(R.id.btn_login)
-    Button btnLogin;
 
     public static SingInFragment newInstance(){
         return new SingInFragment();
@@ -43,5 +41,11 @@ public class SingInFragment extends BaseFragment {
     @OnClick(R.id.tv_link_sing_up)
     public void createAccount(){
         ((MainActivity)getActivity()).changeFragment(SingUpFragment.newInstance());
+    }
+    @OnClick(R.id.btn_login)
+    public void btnLogin (){
+        if (validation(etLogin) && validation(etPassword)){
+            System.out.println("good");
+        }
     }
 }
