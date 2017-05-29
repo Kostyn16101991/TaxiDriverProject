@@ -54,32 +54,20 @@ public class BaseFragment extends Fragment {
 
     private boolean isValidEmail(String email) {
         boolean isValid;
-        String phoneExpression = "([0-9]){10,12}";
-        String mailExpression = "(([a-zA-z0-9])+([//*&^%$#.-])?)+([a-zA-z0-9])+@([a-z])+([//.]([a-z]){2,4})+";
-        Pattern mailPattern = Pattern.compile(mailExpression);
-        Matcher mailMatcher = mailPattern.matcher(email);
-        isValid = mailMatcher.matches();
+        isValid = Pattern
+                .compile("(([a-zA-Z0-9])+([//*&^%$#.-])?)+([a-zA-z0-9])+@([a-z])+([//.]([a-z]){2,4})+")
+                .matcher(email).matches();
         if (!isValid) {
-            Pattern phonePattern = Pattern.compile(phoneExpression);
-            Matcher phoneMatcher = phonePattern.matcher(email);
-            isValid = phoneMatcher.matches();
+            isValid = Pattern.compile("([0-9]){10,12}").matcher(email).matches();
         }
         return isValid;
     }
 
     private boolean isdValidPassword(String password) {
         boolean isValid = false;
-        String expression = "([A-Za-z0-9]){6,15}";
-        String findLowReg = "([A-Z])+";
-        String numbers = "([0-9])+";
-        Pattern pattern = Pattern.compile(expression);
-        Matcher matcher = pattern.matcher(password);
-        Pattern patternLow = Pattern.compile(findLowReg);
-        Matcher matcherLow = patternLow.matcher(password);
-        Pattern patternNum = Pattern.compile(numbers);
-        Matcher matcherNum = patternNum.matcher(password);
-        if (matcher.matches()) {
-            if (matcherLow.find() && matcherNum.find()) {
+        if (Pattern.compile("([A-Za-z0-9]){6,15}").matcher(password).matches()) {
+            if (Pattern.compile("([A-Z])+").matcher(password).find()
+                    && Pattern.compile("([0-9])+").matcher(password).find()) {
                 isValid = true;
             }
         }
