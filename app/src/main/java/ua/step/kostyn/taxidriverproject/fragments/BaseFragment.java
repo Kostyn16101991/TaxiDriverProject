@@ -1,13 +1,17 @@
 package ua.step.kostyn.taxidriverproject.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.regex.Matcher;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.regex.Pattern;
 
 import butterknife.ButterKnife;
@@ -21,11 +25,18 @@ import ua.step.kostyn.taxidriverproject.R;
 
 public class BaseFragment extends Fragment {
     public Unbinder unbinder;
+    public FirebaseDatabase mDatabase;
+    public DatabaseReference mReference;
+    public GsonBuilder builder;
+    public Gson gson;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+        mDatabase = FirebaseDatabase.getInstance();
+        builder = new GsonBuilder();
+        gson = builder.create();
     }
 
     @Override
@@ -37,7 +48,7 @@ public class BaseFragment extends Fragment {
     public boolean validation(EditText editText) {
         if (editText.getId() == R.id.et_login) {
             if (!isValidEmail(editText.getText().toString())) {
-                editText.setError("the value of \"E-mail\" is not valid");
+                editText.setError("wrong email");
                 return false;
             }
         } else if (editText.getId() == R.id.et_password) {
@@ -54,11 +65,9 @@ public class BaseFragment extends Fragment {
 
     private boolean isValidEmail(String email) {
         boolean isValid;
-        isValid = Pattern
-                .compile("(([a-zA-Z0-9])+([//*&^%$#.-])?)+([a-zA-z0-9])+@([a-z])+([//.]([a-z]){2,4})+")
-                .matcher(email).matches();
+        isValid = Patterns.EMAIL_ADDRESS.matcher(email).matches();
         if (!isValid) {
-            isValid = Pattern.compile("([0-9]){10,12}").matcher(email).matches();
+            isValid = Patterns.PHONE.matcher(email).matches();
         }
         return isValid;
     }

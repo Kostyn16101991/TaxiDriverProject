@@ -7,10 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import ua.step.kostyn.taxidriverproject.MainActivity;
 import ua.step.kostyn.taxidriverproject.R;
+import ua.step.kostyn.taxidriverproject.models.TestModel;
 
 /**
  * Created by konstantin on 27.05.17.
@@ -44,7 +50,29 @@ public class SingInFragment extends BaseFragment {
     @OnClick(R.id.btn_login)
     public void btnLogin (){
         if (validation(etLogin) && validation(etPassword)){
+            checkUserInDB();
             System.out.println("good");
         }
+    }
+
+    public void checkUserInDB(){
+        mReference = mDatabase.getReference("users");
+        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println(dataSnapshot.getChildren());
+                for (DataSnapshot snapsHot : dataSnapshot.getChildren()) {
+                    System.out.println(snapsHot.getValue().toString());
+                    TestModel testModel = gson.fromJson(snapsHot.getValue().toString(), TestModel.class);
+                    System.out.println("testModel "+testModel);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

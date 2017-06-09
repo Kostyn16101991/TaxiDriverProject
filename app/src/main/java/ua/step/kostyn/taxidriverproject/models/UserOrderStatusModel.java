@@ -7,7 +7,7 @@ import java.util.List;
  * Created by konstantin on 24.05.17.
  */
 
-public class UserModel {
+public class UserOrderStatusModel {
     private int idUser;
     private int avatarUser;
     private String nameUser;
@@ -17,4 +17,6 @@ public class UserModel {
     private int phoneUser;
     private String comentsUser;
     private int raitingUser;
+
+
 }
