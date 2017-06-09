@@ -8,91 +8,91 @@ import java.util.List;
  */
 
 public class DriverModel {
-    private int idDriver;
-    private int avatarDriver;
-    private String nameDriver;
-    private String lastNameDriver;
-    private boolean sexDriver;
-    private int ageDriver;
-    private int phoneDriver;
-    private String emailDriver;
-    private String passwordDriver;
+    private int idUser;
+    private int avatarUser;
+    private String nameUser;
+    private String lastNameUser;
+    private boolean sexUser;
+    private int ageUser;
+    private String phoneUser;
+    private String emailUser;
+    private String passwordUser;
     private double experienceDriver;
     private String carModelDriver;
     private String numPlateCarDriver;
 
     private List<OrderUserModel> orderUserModelList = new ArrayList<>();
 
-    public int getIdDriver() {
-        return idDriver;
+    public int getIdUser() {
+        return idUser;
     }
 
-    public void setIdDriver(int idDriver) {
-        this.idDriver = idDriver;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
-    public int getAvatarDriver() {
-        return avatarDriver;
+    public int getAvatarUser() {
+        return avatarUser;
     }
 
-    public void setAvatarDriver(int avatarDriver) {
-        this.avatarDriver = avatarDriver;
+    public void setAvatarUser(int avatarUser) {
+        this.avatarUser = avatarUser;
     }
 
-    public String getNameDriver() {
-        return nameDriver;
+    public String getNameUser() {
+        return nameUser;
     }
 
-    public void setNameDriver(String nameDriver) {
-        this.nameDriver = nameDriver;
+    public void setNameUser(String nameUser) {
+        this.nameUser = nameUser;
     }
 
-    public String getLastNameDriver() {
-        return lastNameDriver;
+    public String getLastNameUser() {
+        return lastNameUser;
     }
 
-    public void setLastNameDriver(String lastNameDriver) {
-        this.lastNameDriver = lastNameDriver;
+    public void setLastNameUser(String lastNameUser) {
+        this.lastNameUser = lastNameUser;
     }
 
-    public boolean isSexDriver() {
-        return sexDriver;
+    public boolean isSexUser() {
+        return sexUser;
     }
 
-    public void setSexDriver(boolean sexDriver) {
-        this.sexDriver = sexDriver;
+    public void setSexUser(boolean sexUser) {
+        this.sexUser = sexUser;
     }
 
-    public int getAgeDriver() {
-        return ageDriver;
+    public int getAgeUser() {
+        return ageUser;
     }
 
-    public void setAgeDriver(int ageDriver) {
-        this.ageDriver = ageDriver;
+    public void setAgeUser(int ageUser) {
+        this.ageUser = ageUser;
     }
 
-    public int getPhoneDriver() {
-        return phoneDriver;
+    public String getPhoneUser() {
+        return phoneUser;
     }
 
-    public void setPhoneDriver(int phoneDriver) {
-        this.phoneDriver = phoneDriver;
+    public void setPhoneUser(String phoneUser) {
+        this.phoneUser = phoneUser;
     }
 
-    public String getEmailDriver() {
-        return emailDriver;
+    public String getEmailUser() {
+        return emailUser;
     }
 
-    public void setEmailDriver(String emailDriver) {
-        this.emailDriver = emailDriver;
+    public void setEmailUser(String emailUser) {
+        this.emailUser = emailUser;
     }
 
-    public String getPasswordDriver() {
-        return passwordDriver;
+    public String getPasswordUser() {
+        return passwordUser;
     }
 
-    public void setPasswordDriver(String passwordDriver) {
-        this.passwordDriver = passwordDriver;
+    public void setPasswordUser(String passwordUser) {
+        this.passwordUser = passwordUser;
     }
 
     public double getExperienceDriver() {
@@ -125,6 +125,25 @@ public class DriverModel {
 
     public void setOrderUserModelList(List<OrderUserModel> orderUserModelList) {
         this.orderUserModelList = orderUserModelList;
+    }
+
+    @Override
+    public String toString() {
+        return "DriverModel{" +
+                "idUser=" + idUser +
+                ", avatarUser=" + avatarUser +
+                ", nameUser='" + nameUser + '\'' +
+                ", lastNameUser='" + lastNameUser + '\'' +
+                ", sexUser=" + sexUser +
+                ", ageUser=" + ageUser +
+                ", phoneUser=" + phoneUser +
+                ", emailUser='" + emailUser + '\'' +
+                ", passwordUser='" + passwordUser + '\'' +
+                ", experienceDriver=" + experienceDriver +
+                ", carModelDriver='" + carModelDriver + '\'' +
+                ", numPlateCarDriver='" + numPlateCarDriver + '\'' +
+                ", orderUserModelList=" + orderUserModelList +
+                '}';
     }
 
     public static class Driver{

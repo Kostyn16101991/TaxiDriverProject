@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -45,7 +46,7 @@ public class BaseFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public boolean validation(EditText editText) {
+    protected boolean validation(EditText editText) {
         if (editText.getId() == R.id.et_login) {
             if (!isValidEmail(editText.getText().toString())) {
                 editText.setError("wrong email");
@@ -81,5 +82,9 @@ public class BaseFragment extends Fragment {
             }
         }
         return isValid;
+    }
+
+    protected void makeToast(String message){
+        Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
     }
 }
