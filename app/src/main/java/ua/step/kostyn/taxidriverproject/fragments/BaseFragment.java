@@ -84,6 +84,21 @@ public class BaseFragment extends Fragment {
         return isValid;
     }
 
+    public boolean confirmPasswordValidation(EditText confirmPass, EditText pass){
+        String confirmPassword = confirmPass.getText().toString();
+        boolean isValid = false;
+        if (!confirmPassword.isEmpty()){
+            if (confirmPassword.equals(pass.getText().toString())){
+                isValid = true;
+            } else {
+                confirmPass.setError("fields password and confirm password must be equals");
+            }
+        } else {
+            confirmPass.setError("can't be empty fields");
+        }
+        return isValid;
+    }
+
     protected void makeToast(String message){
         Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
     }

@@ -12,8 +12,8 @@ public class DriverModel {
     private int avatarUser;
     private String nameUser;
     private String lastNameUser;
-    private boolean sexUser;
-    private int ageUser;
+    private String sexUser;
+    private String ageUser;
     private String phoneUser;
     private String emailUser;
     private String passwordUser;
@@ -55,19 +55,19 @@ public class DriverModel {
         this.lastNameUser = lastNameUser;
     }
 
-    public boolean isSexUser() {
+    public String getSexUser() {
         return sexUser;
     }
 
-    public void setSexUser(boolean sexUser) {
+    public void setSexUser(String sexUser) {
         this.sexUser = sexUser;
     }
 
-    public int getAgeUser() {
+    public String getAgeUser() {
         return ageUser;
     }
 
-    public void setAgeUser(int ageUser) {
+    public void setAgeUser(String ageUser) {
         this.ageUser = ageUser;
     }
 

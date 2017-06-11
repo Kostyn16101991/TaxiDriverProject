@@ -12,8 +12,6 @@ import android.widget.EditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 
 import butterknife.BindView;
@@ -22,7 +20,6 @@ import ua.step.kostyn.taxidriverproject.DriverActivity;
 import ua.step.kostyn.taxidriverproject.MainActivity;
 import ua.step.kostyn.taxidriverproject.R;
 import ua.step.kostyn.taxidriverproject.models.DriverModel;
-import ua.step.kostyn.taxidriverproject.models.TestModel;
 
 /**
  * Created by konstantin on 27.05.17.
@@ -71,14 +68,10 @@ public class SingInFragment extends BaseFragment {
         mReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println(dataSnapshot.getChildren());
                 for (DataSnapshot snapsHot : dataSnapshot.getChildren()) {
-                    System.out.println(snapsHot.getValue().toString());
                     if (checkUserExistInDB(snapsHot)){
-                        DriverModel.Driver.setDriverModel(gson.fromJson(snapsHot.getValue().toString(), DriverModel.class));
                         startActivity(new Intent(getActivity(),DriverActivity.class));
-                        DriverModel driverModel = gson.fromJson(snapsHot.getValue().toString(), DriverModel.class);
-                        System.out.println("DriverModel"+ driverModel);
+                        setDriverModelStatic(dataSnapshot);
 
                     } else {
                         makeToast("invalid email / password");
@@ -100,6 +93,12 @@ public class SingInFragment extends BaseFragment {
                 etLogin.getText().toString().equals((gson.fromJson(dataSnapshot.getValue().toString(), DriverModel.class)).getPhoneUser())) &&
                 etPassword.getText().toString()
                         .equals((gson.fromJson(dataSnapshot.getValue().toString(), DriverModel.class)).getPasswordUser()));
+    }
+
+    private void setDriverModelStatic(DataSnapshot dataSnapshot){
+        DriverModel driverModel = gson.fromJson(dataSnapshot.getValue().toString(), DriverModel.class);
+        driverModel.setIdUser(Integer.parseInt(dataSnapshot.getKey()));
+        DriverModel.Driver.setDriverModel(gson.fromJson(dataSnapshot.getValue().toString(), DriverModel.class));
     }
 
     private void progressDialogShow(){
