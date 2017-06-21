@@ -59,7 +59,6 @@ public class SingInFragment extends BaseFragment {
         if (validation(etLogin) && validation(etPassword)) {
             progressDialogShow();
             checkUserInDB();
-            System.out.println("good");
         }
     }
 
@@ -69,10 +68,9 @@ public class SingInFragment extends BaseFragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapsHot : dataSnapshot.getChildren()) {
-                    if (checkUserExistInDB(snapsHot)){
-                        startActivity(new Intent(getActivity(),DriverActivity.class));
+                    if (checkUserExistInDB(snapsHot)) {
+                        startActivity(new Intent(getActivity(), DriverActivity.class));
                         setDriverModelStatic(dataSnapshot);
-
                     } else {
                         makeToast("invalid email / password");
                         progressDialogDismiss();
@@ -95,19 +93,19 @@ public class SingInFragment extends BaseFragment {
                         .equals((gson.fromJson(dataSnapshot.getValue().toString(), DriverModel.class)).getPasswordUser()));
     }
 
-    private void setDriverModelStatic(DataSnapshot dataSnapshot){
+    private void setDriverModelStatic(DataSnapshot dataSnapshot) {
         DriverModel driverModel = gson.fromJson(dataSnapshot.getValue().toString(), DriverModel.class);
         driverModel.setIdUser(Integer.parseInt(dataSnapshot.getKey()));
         DriverModel.Driver.setDriverModel(gson.fromJson(dataSnapshot.getValue().toString(), DriverModel.class));
     }
 
-    private void progressDialogShow(){
+    private void progressDialogShow() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Autentification...");
         progressDialog.show();
     }
 
-    private void progressDialogDismiss(){
+    private void progressDialogDismiss() {
         progressDialog.dismiss();
     }
 }

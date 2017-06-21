@@ -36,6 +36,7 @@ import ua.step.kostyn.taxidriverproject.models.DriverModel;
  */
 
 public class SingUpFragment extends BaseFragment {
+    private final int GALLERY_REQUEST = 1;
     @BindView(R.id.user_avatar)
     CircleImageView user_avatar;
     @BindView(R.id.et_name)
@@ -46,6 +47,8 @@ public class SingUpFragment extends BaseFragment {
     Spinner spSex;
     @BindView(R.id.sp_age)
     Spinner spAge;
+    @BindView(R.id.et_phone)
+    EditText etPhone;
     @BindView(R.id.et_email)
     EditText etEmail;
     @BindView(R.id.et_password)
@@ -59,7 +62,7 @@ public class SingUpFragment extends BaseFragment {
     @BindView(R.id.et_experience)
     EditText etExperience;
 
-    private final int GALLERY_REQUEST = 1;
+
     private DriverModel driverModel = new DriverModel();
     public static SingUpFragment newInstance() {
         return new SingUpFragment();
@@ -82,7 +85,7 @@ public class SingUpFragment extends BaseFragment {
         mReference = mDatabase.getReference("users");
         if (validation(etName) && validation(etLastName)
                 && validation(etEmail) && validation(etPassword)
-                && confirmPasswordValidation(etConfPassword, etConfPassword)
+                && confirmPasswordValidation(etConfPassword, etPassword)
                 && validation(etCarModel) && validation(etNumPlate)) {
             setDataInDriverModel();
             mReference.child(String.valueOf(driverModel.getIdUser())).setValue(driverModel);
@@ -100,13 +103,13 @@ public class SingUpFragment extends BaseFragment {
         driverModel.setLastNameUser(etLastName.getText().toString());
         driverModel.setSexUser(spSex.getSelectedItem().toString());
         driverModel.setAgeUser(spAge.getSelectedItem().toString());
+        driverModel.setPhoneUser(etPhone.getText().toString());
         driverModel.setEmailUser(etEmail.getText().toString());
         driverModel.setPasswordUser(etPassword.getText().toString());
         driverModel.setCarModelDriver(etCarModel.getText().toString());
         driverModel.setNumPlateCarDriver(etNumPlate.getText().toString());
         driverModel.setExperienceDriver(Double.valueOf((etExperience.getText()).toString()));
         DriverModel.Driver.setDriverModel(driverModel);
-
     }
 
     ///UserAvatar///

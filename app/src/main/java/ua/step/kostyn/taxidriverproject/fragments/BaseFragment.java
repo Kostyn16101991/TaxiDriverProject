@@ -76,10 +76,16 @@ public class BaseFragment extends Fragment {
     private boolean isdValidPassword(String password) {
         boolean isValid = false;
         if (Pattern.compile("([A-Za-z0-9]){6,15}").matcher(password).matches()) {
-            if (Pattern.compile("([A-Z])+").matcher(password).find()
-                    && Pattern.compile("([0-9])+").matcher(password).find()) {
-                isValid = true;
-            }
+            isValid = isValidPasswordUpperCaseAndNumbers(password);
+        }
+        return isValid;
+    }
+
+    private  boolean isValidPasswordUpperCaseAndNumbers(String password){
+        boolean isValid = false;
+        if (Pattern.compile("([A-Z])+").matcher(password).find()
+                && Pattern.compile("([0-9])+").matcher(password).find()) {
+            isValid = true;
         }
         return isValid;
     }
@@ -88,13 +94,19 @@ public class BaseFragment extends Fragment {
         String confirmPassword = confirmPass.getText().toString();
         boolean isValid = false;
         if (!confirmPassword.isEmpty()){
-            if (confirmPassword.equals(pass.getText().toString())){
-                isValid = true;
-            } else {
-                confirmPass.setError("fields password and confirm password must be equals");
-            }
+            isValid = isEqualsPasswordAndConfirmPassword(pass, confirmPass);
         } else {
             confirmPass.setError("can't be empty fields");
+        }
+        return isValid;
+    }
+
+    private  boolean isEqualsPasswordAndConfirmPassword(EditText pass, EditText confirmPassword){
+        boolean isValid = false;
+        if (confirmPassword.getText().toString().equals(pass.getText().toString())){
+            isValid = true;
+        } else {
+            confirmPassword.setError("fields password and confirm password must be equals");
         }
         return isValid;
     }
