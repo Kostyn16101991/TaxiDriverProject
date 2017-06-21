@@ -34,6 +34,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.google.code.gson:gson-parent:2.8.1'
+    compile 'id.zelory:compressor:2.0.0'
 }
 
 

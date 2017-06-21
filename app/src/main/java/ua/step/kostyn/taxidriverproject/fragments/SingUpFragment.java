@@ -1,13 +1,18 @@
 package ua.step.kostyn.taxidriverproject.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +27,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 import ua.step.kostyn.taxidriverproject.R;
 import ua.step.kostyn.taxidriverproject.models.DriverModel;
 
@@ -37,6 +46,7 @@ import ua.step.kostyn.taxidriverproject.models.DriverModel;
 
 public class SingUpFragment extends BaseFragment {
     private final int GALLERY_REQUEST = 1;
+    private final int PERMISSION_RQUEST = 2;
     @BindView(R.id.user_avatar)
     CircleImageView user_avatar;
     @BindView(R.id.et_name)
@@ -63,7 +73,9 @@ public class SingUpFragment extends BaseFragment {
     EditText etExperience;
 
 
-    private DriverModel driverModel = new DriverModel();
+    private DriverModel driverModel;
+    private String userPhotoLink;
+
     public static SingUpFragment newInstance() {
         return new SingUpFragment();
     }
@@ -78,6 +90,10 @@ public class SingUpFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_RQUEST);
+        }
     }
 
     @OnClick(R.id.btn_create_account)
@@ -98,6 +114,7 @@ public class SingUpFragment extends BaseFragment {
 
     public void setDataInDriverModel() {
         int id = new Random().nextInt() + new Random().nextInt();
+        driverModel = new DriverModel();
         driverModel.setIdUser(id);
         driverModel.setNameUser(etName.getText().toString());
         driverModel.setLastNameUser(etLastName.getText().toString());
@@ -110,6 +127,7 @@ public class SingUpFragment extends BaseFragment {
         driverModel.setNumPlateCarDriver(etNumPlate.getText().toString());
         driverModel.setExperienceDriver(Double.valueOf((etExperience.getText()).toString()));
         DriverModel.Driver.setDriverModel(driverModel);
+        System.out.println(photoToString());
     }
 
     ///UserAvatar///
@@ -121,21 +139,18 @@ public class SingUpFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case GALLERY_REQUEST:
-            if (resultCode == Activity.RESULT_OK){
-                try {
-                    user_avatar.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), data.getData()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            user_avatar.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), data.getData()));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        String link = String.valueOf(data.getData());
+        userPhotoLink = String.valueOf(data.getData());
     }
 
-    private void photoToString() {
-
+    private String photoToString() {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        new Compressor(getContext()).compressToBitmap(new File(userPhotoLink))
+                .compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
     }
 }
