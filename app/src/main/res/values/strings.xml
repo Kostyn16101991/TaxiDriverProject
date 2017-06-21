@@ -14,6 +14,7 @@
     <string name="tv_link_login">Already a member? Login</string>
     <string name="hint_car_model">Car Model</string>
     <string name="hint_num_plate">Num Plate</string>
+    <string name="hint_experience">Experience (years)</string>
     <item name="visible" type="id"/>
     <item name="masked" type="id"/>
     <array name="driver_sex">

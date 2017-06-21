@@ -1,5 +1,6 @@
 package ua.step.kostyn.taxidriverproject.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -22,6 +23,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -54,10 +56,11 @@ public class SingUpFragment extends BaseFragment {
     EditText etCarModel;
     @BindView(R.id.et_num_plate)
     EditText etNumPlate;
+    @BindView(R.id.et_experience)
+    EditText etExperience;
 
+    private final int GALLERY_REQUEST = 1;
     private DriverModel driverModel = new DriverModel();
-    static final int galleryRequest = 1;
-
     public static SingUpFragment newInstance() {
         return new SingUpFragment();
     }
@@ -74,74 +77,62 @@ public class SingUpFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void createUserId() {
-        mReference = mDatabase.getReference("users");
-        Query lastQuery = mReference.orderByKey().limitToLast(1);
-        lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapsHot : dataSnapshot.getChildren()) {
-                    driverModel.setIdUser(Integer.parseInt(snapsHot.getKey()) + 1);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     @OnClick(R.id.btn_create_account)
     public void btnCreateAccount() {
         mReference = mDatabase.getReference("users");
-//        if (validation(etName) && validation(etLastName)
-//                && validation(etEmail) && validation(etPassword)
-//                && confirmPasswordValidation(etConfPassword,  etConfPassword)
-//                && validation(etCarModel) && validation(etNumPlate)){
-//
-//
-//        }
-        setDataInDriverModel();
-        mReference.child(String.valueOf(driverModel.getIdUser())).setValue(driverModel);
+        if (validation(etName) && validation(etLastName)
+                && validation(etEmail) && validation(etPassword)
+                && confirmPasswordValidation(etConfPassword, etConfPassword)
+                && validation(etCarModel) && validation(etNumPlate)) {
+            setDataInDriverModel();
+            mReference.child(String.valueOf(driverModel.getIdUser())).setValue(driverModel);
+        } else {
+
+        }
+
     }
 
 
-    public void setDataInDriverModel(){
-        createUserId();
+    public void setDataInDriverModel() {
+        int id = new Random().nextInt() + new Random().nextInt();
+        driverModel.setIdUser(id);
         driverModel.setNameUser(etName.getText().toString());
         driverModel.setLastNameUser(etLastName.getText().toString());
-        driverModel.setSexUser(spAge.getSelectedItem().toString());
-        driverModel.setAgeUser(spSex.getSelectedItem().toString());
+        driverModel.setSexUser(spSex.getSelectedItem().toString());
+        driverModel.setAgeUser(spAge.getSelectedItem().toString());
         driverModel.setEmailUser(etEmail.getText().toString());
         driverModel.setPasswordUser(etPassword.getText().toString());
         driverModel.setCarModelDriver(etCarModel.getText().toString());
         driverModel.setNumPlateCarDriver(etNumPlate.getText().toString());
+        driverModel.setExperienceDriver(Double.valueOf((etExperience.getText()).toString()));
+        DriverModel.Driver.setDriverModel(driverModel);
+
     }
 
     ///UserAvatar///
-
     @OnClick(R.id.user_avatar)
     public void setAvatar() {
-        Intent photoPicerIntent = new Intent(Intent.ACTION_PICK);
-        photoPicerIntent.setType("image/*");
-        startActivityForResult(photoPicerIntent, galleryRequest);
+        startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI), GALLERY_REQUEST);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = null;
-        switch (requestCode) {
-            case galleryRequest:
-                Uri selectedImage = data.getData();
+        switch (requestCode){
+            case GALLERY_REQUEST:
+            if (resultCode == Activity.RESULT_OK){
                 try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                    user_avatar.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), data.getData()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //user_avatar.setImageURI(selectedImage);
-                user_avatar.setImageBitmap(bitmap);
+            }
         }
+
+        String link = String.valueOf(data.getData());
+    }
+
+    private void photoToString() {
+
     }
 }

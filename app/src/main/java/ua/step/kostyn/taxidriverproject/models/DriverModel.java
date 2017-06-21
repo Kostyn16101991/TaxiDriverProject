@@ -1,5 +1,7 @@
 package ua.step.kostyn.taxidriverproject.models;
 
+import android.text.Editable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,7 @@ import java.util.List;
 
 public class DriverModel {
     private int idUser;
-    private int avatarUser;
+    private String avatarUser;
     private String nameUser;
     private String lastNameUser;
     private String sexUser;
@@ -31,11 +33,11 @@ public class DriverModel {
         this.idUser = idUser;
     }
 
-    public int getAvatarUser() {
+    public String getAvatarUser() {
         return avatarUser;
     }
 
-    public void setAvatarUser(int avatarUser) {
+    public void setAvatarUser(String avatarUser) {
         this.avatarUser = avatarUser;
     }
 
